@@ -6,18 +6,17 @@ import {
   Image, 
   Button,
   TouchableOpacity,
-  SectionList,
+  SwipeableFlatList,
   RefreshControl,
   ActivityIndicator,
   TouchableHighlight
 } from 'react-native'
-import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import Toast, {DURATION} from 'react-native-easy-toast'
 import fetchRequest from '../util/FetchUtil'
 
-const userListUrl = "getCityArrayList";
+const userListUrl = "getUserList";
 
-export default class PopularPage extends Component {
+export default class SwipeableFlatListPage extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -42,7 +41,8 @@ export default class PopularPage extends Component {
   _renderRow(data) {
     return (
       <View style={styles.row}>
-        <Text style={styles.tips}>{data.item.name}</Text> 
+        <Text style={styles.tips}>{data.item.fullname}</Text> 
+        <Text style={styles.tips}>{data.item.email}</Text>
       </View>
     )
   }
@@ -71,23 +71,25 @@ export default class PopularPage extends Component {
       </TouchableHighlight>
     </View>
   }
-  // 分组标题
-  _renderSectionHeader({section}) {
-    return <View style={styles.sectionHeader}>
-      <Text>{section.title}</Text>
-    </View>
-  }
   render() {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <ScrollableTabView
-          renderTabBar={()=> <ScrollableTabBar/>}
-        >
-          <Text tabLabel="Java">JAVA</Text>
-          <Text tabLabel="IOS">IOS</Text>
-          <Text tabLabel="Android">Android</Text>
-          <Text tabLabel="JavaScript">JavaScript</Text>
-        </ScrollableTabView>
+        <SwipeableFlatList
+          data={this.state.dataArray}
+          renderItem={(data)=>this._renderRow(data)}
+          refreshControl={<RefreshControl 
+            title={'刷新中'}
+            colors={['red']}
+            tintColor={'red'}
+            titleColor={'red'}
+            refreshing={this.state.isLoading}
+            onRefresh={()=>this._onLoad()}
+          />}
+          ListFooterComponent={() => this._genIndicator()}
+          renderQuickActions={()=> this._genQuickAction()}
+          maxSwipeDistance={80}
+        />
         <Toast
           ref={toast=>{
             this.toast = toast
@@ -113,7 +115,6 @@ const styles = StyleSheet.create({
   },
   row: {
     padding:10,
-    alignItems: 'center',
     backgroundColor: '#169'
   },
   tips: {
@@ -152,16 +153,5 @@ const styles = StyleSheet.create({
   delete: {
     color: "#d8fffa",
     textAlign: "center"
-  },
-  sectionHeader: {
-    paddingTop: 30,
-    paddingBottom: 30,
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'red'
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#fff'
   }
 })
