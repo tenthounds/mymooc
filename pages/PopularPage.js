@@ -1,98 +1,449 @@
 import React, { Component } from 'react'
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image, 
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
   Button,
   TouchableOpacity,
   SectionList,
-  RefreshControl,
-  ActivityIndicator,
-  TouchableHighlight
+  Dimensions,
+  TouchableHighlight,
+  ScrollView
 } from 'react-native'
-import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast, { DURATION } from 'react-native-easy-toast'
 import fetchRequest from '../util/FetchUtil'
+import Swiper from 'react-native-swiper'
 
-const userListUrl = "getCityArrayList";
+const { width, height } = Dimensions.get('window')
+const wd = (width-40)/3,
+ht= wd/123*107;
+const userListUrl = 'getCityArrayList'
 
 export default class PopularPage extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      isLoading: false,
-      dataArray: []
-    }
-    this._onLoad(userListUrl)
+  constructor(props) {
+    super(props)
   }
-  // onLoad
-  _onLoad() {
-    fetchRequest(userListUrl,"GET")
-      .then( res=>{
-        this.setState({
-          dataArray: res.data,
-          isLoading: false
-        })
-      }).catch( err=>{ 
-        alert(err)
-      })
-  }
-  // 列表项
-  _renderRow(data) {
+  // 头部
+  _renderHeader() {
     return (
-      <View style={styles.row}>
-        <Text style={styles.tips}>{data.item.name}</Text> 
+      <View style={styles.header}>
+        <Image
+          source={require('../res/images/ic_logo.png')}
+          style={styles.logo}
+          resizeMode="stretch"
+          />
+        <Image
+          source={require('../res/images/ic_service.png')}
+          style={styles.service}
+          resizeMode="stretch"
+        />
       </View>
     )
   }
-  // 上拉加载更多
-  _genIndicator() {
-    return <View style={styles.indicatorContainer}>
-      <ActivityIndicator
-        size={'small'}
-        animating={true}
-        color={'red'}
-      />
-      <Text style={styles.indicator}>正在加载更多</Text> 
-    </View>
+  // 公告
+  _renderNews() {
+    return (
+      <View style={styles.newsContainer}>
+        <Image
+          source={require('../res/images/ic_star.png')}
+          style={styles.noticeImg}
+          resizeMode="stretch"
+        />
+        <Text style={styles.noticeSolid}>
+          |
+        </Text>
+        <Swiper 
+          style={styles.news}
+          horizontal ={false}
+          autoplay
+          loop
+          showsPagination={false}
+          removeClippedSubviews={false}
+        >
+          <Text style={styles.newsText}>
+            重庆时时彩上线了
+          </Text>
+          <Text style={styles.newsText}>
+            重庆时时彩上线了
+          </Text>
+          <Text style={styles.newsText}>
+            重庆时时彩上线了
+          </Text>
+        </Swiper>
+        <Image
+          source={require('../res/images/ic_tiaozhuan.png')}
+          resizeMode="stretch"
+        />
+      </View>
+    )
   }
-  // 侧滑菜单
-  _genQuickAction() {
-    return <View style={styles.quickContainer}>
-      <TouchableHighlight
-        onPress={()=>{
-          alert('确认删除？')
-        }}
+  // 轮播图
+  _renderBanner() {
+    return (
+      <Swiper 
+        style={styles.banners}
+        backgroundColor={'#1a1514'} 
+        horizontal ={true}
+        autoplay
+        loop
+        paginationStyle={styles.paginationStyle}
+        dotStyle={styles.dotStyle}
+        activeDotStyle={styles.activeDotStyle}
+        removeClippedSubviews={false}
       >
-        <View style={styles.quick}>
-          <Text style={styles.delete}>删除</Text>
+        <View>
+          <Image
+            source={{
+              uri:'https://www.uying.app/ad/0839bd4863e5e5a7e79b787a122eca33.png'
+            }}
+            style={styles.bannerImg}
+            resizeMode="stretch"
+          />
         </View>
-      </TouchableHighlight>
-    </View>
+        <View>
+          <Image
+            source={{
+              uri:'https://www.uying.app/ad/1a333bc8c4e8d9dcf7bdc4b93c8e6ddb.png'
+            }}
+            style={styles.bannerImg}
+            resizeMode="stretch"
+          />
+        </View>
+        <View>
+          <Image
+            source={{
+              uri:'https://www.uying.app/ad/212912ea55b63b74827a99055ef90b8a.png'
+            }}
+            style={styles.bannerImg}
+            resizeMode="stretch"
+          />
+        </View>
+      </Swiper>
+    )
   }
-  // 分组标题
-  _renderSectionHeader({section}) {
-    return <View style={styles.sectionHeader}>
-      <Text>{section.title}</Text>
-    </View>
+  // 彩种列表
+  _renderLotteryList() {
+    return (
+      <View style={styles.lotteryContainer}>
+        {/* 时时彩 */}
+        <View style={styles.lotteryBox}>
+          <View style={styles.lotteryTitle}>
+            <View style={styles.lotteryTitleI}></View>
+            <Text>
+              时时彩
+            </Text>
+            <Image
+              source={require('../res/images/ic_star.png')}
+              style={styles.noticeImg}
+              resizeMode="stretch"
+            />
+          </View>
+          <View style={styles.lotteryCnt}>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  重庆时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  重庆时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  重庆时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  重庆时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  重庆时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_hljssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_hljssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  黑龙江时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                source={require('../res/images/lotteryLogo/ic_logo_bg_tjssc.png')}
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_tjssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryText}>
+                  天津时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+          </View>
+        </View>
+        {/* 11选5 */}
+        <View style={styles.lotteryBox}>
+          <View style={styles.lotteryTitle}>
+            <View style={styles.lotteryTitleI}></View>
+            <Text>
+              11选5
+            </Text>
+            <Image
+              source={require('../res/images/ic_star.png')}
+              style={styles.noticeImg}
+              resizeMode="stretch"
+            />
+          </View>
+          <View style={styles.lotteryCnt}>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_sd11x5.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  山东11选5
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_jx11x5.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  江西11选5
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_tjssc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  天津时时彩
+                </Text>
+              </ImageBackground>
+            </View>
+          </View>
+        </View>
+        {/* 快三 */}
+        <View style={styles.lotteryBox}>
+          <View style={styles.lotteryTitle}>
+            <View style={styles.lotteryTitleI}></View>
+            <Text>
+              快三
+            </Text>
+            <Image
+              source={require('../res/images/ic_star.png')}
+              style={styles.noticeImg}
+              resizeMode="stretch"
+            />
+          </View>
+          <View style={styles.lotteryCnt}>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_jsk3.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  江苏快3
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_ahk3.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  安徽快3
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_hnk3.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  河南快3
+                </Text>
+              </ImageBackground>
+            </View>
+          </View>
+        </View>
+        {/* 其它 */}
+        <View style={styles.lotteryBox}>
+          <View style={styles.lotteryTitle}>
+            <View style={styles.lotteryTitleI}></View>
+            <Text>
+              其它
+            </Text>
+            <Image
+              source={require('../res/images/ic_star.png')}
+              style={styles.noticeImg}
+              resizeMode="stretch"
+            />
+          </View>
+          <View style={styles.lotteryCnt}>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_hklhc.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  香港六合彩
+                </Text>
+              </ImageBackground>
+            </View>
+            <View  style={styles.lotteryItem}>
+              <ImageBackground
+                style={styles.lotteryBg}
+                resizeMode="stretch"
+              >
+                <Image
+                  source={require('../res/images/lotteryLogo/ic_logo_bjpk10.png')}
+                  style={styles.lotteryLogo}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.lotteryTextB}>
+                  北京PK10
+                </Text>
+              </ImageBackground>
+            </View>
+          </View>
+        </View>
+      </View>
+    )
   }
   render() {
-    return (
+    return(
       <View style={styles.container}>
-        <ScrollableTabView
-          renderTabBar={()=> <ScrollableTabBar/>}
-        >
-          <Text tabLabel="Java">JAVA</Text>
-          <Text tabLabel="IOS">IOS</Text>
-          <Text tabLabel="Android">Android</Text>
-          <Text tabLabel="JavaScript">JavaScript</Text>
-        </ScrollableTabView>
-        <Toast
-          ref={toast=>{
-            this.toast = toast
-          }}
-        />
+        {/* 固定头 */}
+        {this._renderHeader()}
+        {/* 滚动区域 */}
+        <View style={styles.scrollContainer}>
+          <ScrollView>
+            {/* 轮播图 */}
+            <View>
+            {this._renderBanner()}
+            </View>
+            {/* 公告 */}
+            {this._renderNews()}
+            {/* 彩种列表 */}
+            {this._renderLotteryList()}
+          </ScrollView>
+        </View>
       </View>
     )
   }
@@ -100,68 +451,138 @@ export default class PopularPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#f3f3f3',
   },
-  item: {
-    backgroundColor: '#169',
-    height: 200,
-    marginRight: 15,
-    marginLeft: 15,
-    marginBottom: 15,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: '#0c0a0a',
+    paddingTop: 10,
+    paddingRight: 15,
+    paddingBottom: 10,
+    paddingLeft: 15,
   },
-  row: {
-    padding:10,
+  logo: {
+    width: 74,
+    height: 24,
+  },
+  service: {
+    width: 22,
+    height: 24,
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  newsContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    width: 'auto',
+    height: 'auto',
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#169'
+    paddingLeft: 10,
+    marginLeft: 10,
+    paddingRight: 10,
+    marginRight: 10,
+    marginTop: 10,
+    borderRadius:5,
   },
-  tips: {
-    fontSize:16,
-    color: '#fff'
+  noticeImg: {
+    width: 14,
+    height: 14,
+    marginRight: 10,
   },
-  line: {
-    height: 1,
-    backgroundColor: '#eaeaea'
+  noticeSolid: {
+    color: 'rgba(211,163,122,.8)',
+    marginRight: 5
   },
-  tcenter: {
-    textAlign: "center"
+  news: {
+    height: 40
   },
-  indicatorContainer: {
-    alignItems: 'center'
+  newsText: {
+    fontSize: 12,
+    lineHeight: 40
   },
-  indicator: {
-    color: 'red',
-    margin: 10,
+  banners: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: 355,
+    height: 140,
+  },
+  bannerImg: {
+    width: 355,
+    height: 123
+  },
+  paginationStyle: {
+    bottom: 3
+  },
+  dotStyle: {
+    width: 12,
+    height: 3,
+    borderRadius:1.5,
+    backgroundColor: '#5d4637'
+  },
+  activeDotStyle:{
+    width: 12,
+    height: 3,
+    borderRadius:1.5,
+    backgroundColor: '#fff'
+  },
+  lotteryBox: {
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+  },
+  lotteryTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+  lotteryTitleI: {
+    width: 7,
+    height: 24,
+    marginRight: 5,
+    backgroundColor: '#df9246'
+  },
+  lotteryCnt: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  lotteryItem: {
+    width: wd,
+    height: ht,
+    backgroundColor: '#f3f3f3',
+    borderRadius: 5,
+    marginBottom: 10
+  },
+  lotteryBg: {
+    width: wd,
+    height: ht,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 5
+  },
+  lotteryLogo: {
+    width: wd/2,
+    height: wd/2
+  },
+  lotteryText: {
+    color: '#fff',
     fontSize: 12
   },
-  quickContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  quick: {
-    backgroundColor: 'red',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    width:80,
-    elevation: 5,//漂浮的效果
-  },
-  delete: {
-    color: "#d8fffa",
-    textAlign: "center"
-  },
-  sectionHeader: {
-    paddingTop: 30,
-    paddingBottom: 30,
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'red'
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#fff'
+  lotteryTextB: {
+    color: '#333',
+    fontSize: 12
   }
 })
