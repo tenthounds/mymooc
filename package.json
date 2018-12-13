@@ -7,8 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "prop-types": "^15.6.2",
     "react": "16.6.1",
     "react-native": "0.57.6",
+    "react-native-device-info": "^0.24.3",
     "react-native-easy-toast": "^1.1.0",
     "react-native-linear-gradient": "^2.5.3",
     "react-native-scrollable-tab-view": "^0.10.0",

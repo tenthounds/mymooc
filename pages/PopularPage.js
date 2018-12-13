@@ -10,11 +10,16 @@ import {
   SectionList,
   Dimensions,
   TouchableHighlight,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from 'react-native'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import fetchRequest from '../util/FetchUtil'
 import Swiper from 'react-native-swiper'
+import LinearGradient from 'react-native-linear-gradient'
+
+import StatusBarView from '../components/StatusBarView'
+import HeaderView from '../components/HeaderView'
 
 const { width, height } = Dimensions.get('window')
 const wd = (width-40)/3,
@@ -44,10 +49,11 @@ export default class PopularPage extends Component {
   }
   // 公告
   _renderNews() {
+    const {navigation} = this.props;
     return (
       <View style={styles.newsContainer}>
         <Image
-          source={require('../res/images/ic_star.png')}
+          source={require('../res/images/ic_notice.png')}
           style={styles.noticeImg}
           resizeMode="stretch"
         />
@@ -62,7 +68,11 @@ export default class PopularPage extends Component {
           showsPagination={false}
           removeClippedSubviews={false}
         >
-          <Text style={styles.newsText}>
+          <Text style={styles.newsText}
+            onPress={() => {
+              navigation.navigate('page1')
+            }}
+          >
             重庆时时彩上线了
           </Text>
           <Text style={styles.newsText}>
@@ -73,8 +83,9 @@ export default class PopularPage extends Component {
           </Text>
         </Swiper>
         <Image
-          source={require('../res/images/ic_tiaozhuan.png')}
-          resizeMode="stretch"
+          source={require('../res/images/ic_arrow_right.png')}
+          style={styles.newsArrowImg}
+          resizeMode="center"
         />
       </View>
     )
@@ -130,81 +141,17 @@ export default class PopularPage extends Component {
         {/* 时时彩 */}
         <View style={styles.lotteryBox}>
           <View style={styles.lotteryTitle}>
-            <View style={styles.lotteryTitleI}></View>
+            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#a25b13', '#df9246']} style={styles.lotteryTitleI}/>
             <Text>
               时时彩
             </Text>
             <Image
-              source={require('../res/images/ic_star.png')}
-              style={styles.noticeImg}
+              source={require('../res/images/ic_hot.png')}
+              style={styles.hotImg}
               resizeMode="stretch"
             />
           </View>
           <View style={styles.lotteryCnt}>
-            <View  style={styles.lotteryItem}>
-              <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
-                style={styles.lotteryBg}
-                resizeMode="stretch"
-              >
-                <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
-                  style={styles.lotteryLogo}
-                  resizeMode="stretch"
-                />
-                <Text style={styles.lotteryText}>
-                  重庆时时彩
-                </Text>
-              </ImageBackground>
-            </View>
-            <View  style={styles.lotteryItem}>
-              <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
-                style={styles.lotteryBg}
-                resizeMode="stretch"
-              >
-                <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
-                  style={styles.lotteryLogo}
-                  resizeMode="stretch"
-                />
-                <Text style={styles.lotteryText}>
-                  重庆时时彩
-                </Text>
-              </ImageBackground>
-            </View>
-            <View  style={styles.lotteryItem}>
-              <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
-                style={styles.lotteryBg}
-                resizeMode="stretch"
-              >
-                <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
-                  style={styles.lotteryLogo}
-                  resizeMode="stretch"
-                />
-                <Text style={styles.lotteryText}>
-                  重庆时时彩
-                </Text>
-              </ImageBackground>
-            </View>
-            <View  style={styles.lotteryItem}>
-              <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
-                style={styles.lotteryBg}
-                resizeMode="stretch"
-              >
-                <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
-                  style={styles.lotteryLogo}
-                  resizeMode="stretch"
-                />
-                <Text style={styles.lotteryText}>
-                  重庆时时彩
-                </Text>
-              </ImageBackground>
-            </View>
             <View  style={styles.lotteryItem}>
               <ImageBackground
                 source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
@@ -258,13 +205,13 @@ export default class PopularPage extends Component {
         {/* 11选5 */}
         <View style={styles.lotteryBox}>
           <View style={styles.lotteryTitle}>
-            <View style={styles.lotteryTitleI}></View>
+            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#a25b13', '#df9246']} style={styles.lotteryTitleI}/>
             <Text>
               11选5
             </Text>
             <Image
-              source={require('../res/images/ic_star.png')}
-              style={styles.noticeImg}
+              source={require('../res/images/ic_hot.png')}
+              style={styles.hotImg}
               resizeMode="stretch"
             />
           </View>
@@ -319,13 +266,13 @@ export default class PopularPage extends Component {
         {/* 快三 */}
         <View style={styles.lotteryBox}>
           <View style={styles.lotteryTitle}>
-            <View style={styles.lotteryTitleI}></View>
+            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#a25b13', '#df9246']} style={styles.lotteryTitleI}/>
             <Text>
               快三
             </Text>
             <Image
-              source={require('../res/images/ic_star.png')}
-              style={styles.noticeImg}
+              source={require('../res/images/ic_hot.png')}
+              style={styles.hotImg}
               resizeMode="stretch"
             />
           </View>
@@ -380,13 +327,13 @@ export default class PopularPage extends Component {
         {/* 其它 */}
         <View style={styles.lotteryBox}>
           <View style={styles.lotteryTitle}>
-            <View style={styles.lotteryTitleI}></View>
+            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#a25b13', '#df9246']} style={styles.lotteryTitleI}/>
             <Text>
               其它
             </Text>
             <Image
-              source={require('../res/images/ic_star.png')}
-              style={styles.noticeImg}
+              source={require('../res/images/ic_hot.png')}
+              style={styles.hotImg}
               resizeMode="stretch"
             />
           </View>
@@ -414,7 +361,7 @@ export default class PopularPage extends Component {
                 <Image
                   source={require('../res/images/lotteryLogo/ic_logo_bjpk10.png')}
                   style={styles.lotteryLogo}
-                  resizeMode="stretch"
+                  resizeMode="contain"
                 />
                 <Text style={styles.lotteryTextB}>
                   北京PK10
@@ -428,7 +375,10 @@ export default class PopularPage extends Component {
   }
   render() {
     return(
-      <View style={styles.container}>
+      <View 
+        style={styles.container}
+      >
+        <StatusBarView backgroundColor={'#000'}/>
         {/* 固定头 */}
         {this._renderHeader()}
         {/* 滚动区域 */}
@@ -476,7 +426,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   newsContainer: {
-    flex: 1,
     backgroundColor: '#fff',
     width: 'auto',
     height: 'auto',
@@ -504,6 +453,10 @@ const styles = StyleSheet.create({
   newsText: {
     fontSize: 12,
     lineHeight: 40
+  },
+  newsArrowImg: {
+    width: 12,
+    height: 10
   },
   banners: {
     paddingLeft: 10,
@@ -544,25 +497,28 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   lotteryTitleI: {
-    width: 7,
-    height: 24,
+    width: 3,
+    height: 15,
     marginRight: 5,
-    backgroundColor: '#df9246'
+  },
+  hotImg: {
+    width: 30,
+    height: 17,
+    marginLeft: 5
   },
   lotteryCnt: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginLeft: 5,
-    marginRight: 5,
   },
   lotteryItem: {
     width: wd,
     height: ht,
     backgroundColor: '#f3f3f3',
     borderRadius: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    marginLeft: 5,
   },
   lotteryBg: {
     width: wd,
@@ -571,7 +527,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 10,
     paddingBottom: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   lotteryLogo: {
     width: wd/2,
