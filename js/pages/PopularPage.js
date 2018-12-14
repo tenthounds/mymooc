@@ -18,13 +18,15 @@ import fetchRequest from '../util/FetchUtil'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 
-import StatusBarView from '../components/StatusBarView'
-import HeaderView from '../components/HeaderView'
+import SafeAreaViewPlus from '../components/SafeAreaViewPlus'
+import NavigationBar from '../components/NavigationBar'
+import theme from '../components/theme'
 
 const { width, height } = Dimensions.get('window')
 const wd = (width-40)/3,
 ht= wd/123*107;
 const userListUrl = 'getCityArrayList'
+const THEME = theme
 
 export default class PopularPage extends Component {
   constructor(props) {
@@ -35,12 +37,12 @@ export default class PopularPage extends Component {
     return (
       <View style={styles.header}>
         <Image
-          source={require('../res/images/ic_logo.png')}
+          source={require('../../res/images/ic_logo.png')}
           style={styles.logo}
           resizeMode="stretch"
           />
         <Image
-          source={require('../res/images/ic_service.png')}
+          source={require('../../res/images/ic_service.png')}
           style={styles.service}
           resizeMode="stretch"
         />
@@ -53,7 +55,7 @@ export default class PopularPage extends Component {
     return (
       <View style={styles.newsContainer}>
         <Image
-          source={require('../res/images/ic_notice.png')}
+          source={require('../../res/images/ic_notice.png')}
           style={styles.noticeImg}
           resizeMode="stretch"
         />
@@ -70,12 +72,16 @@ export default class PopularPage extends Component {
         >
           <Text style={styles.newsText}
             onPress={() => {
-              navigation.navigate('page1')
+              navigation.navigate('SscPage')
             }}
           >
             重庆时时彩上线了
           </Text>
-          <Text style={styles.newsText}>
+          <Text 
+            onPress={() => {
+              navigation.navigate('SscPage')
+            }}
+            style={styles.newsText}>
             重庆时时彩上线了
           </Text>
           <Text style={styles.newsText}>
@@ -83,7 +89,7 @@ export default class PopularPage extends Component {
           </Text>
         </Swiper>
         <Image
-          source={require('../res/images/ic_arrow_right.png')}
+          source={require('../../res/images/ic_arrow_right.png')}
           style={styles.newsArrowImg}
           resizeMode="center"
         />
@@ -95,7 +101,7 @@ export default class PopularPage extends Component {
     return (
       <Swiper 
         style={styles.banners}
-        backgroundColor={'#1a1514'} 
+        backgroundColor={THEME.bannerBgColor} 
         horizontal ={true}
         autoplay
         loop
@@ -146,7 +152,7 @@ export default class PopularPage extends Component {
               时时彩
             </Text>
             <Image
-              source={require('../res/images/ic_hot.png')}
+              source={require('../../res/images/ic_hot.png')}
               style={styles.hotImg}
               resizeMode="stretch"
             />
@@ -154,12 +160,12 @@ export default class PopularPage extends Component {
           <View style={styles.lotteryCnt}>
             <View  style={styles.lotteryItem}>
               <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
+                source={require('../../res/images/lotteryLogo/ic_logo_bg_cqssc.png')}
                 style={styles.lotteryBg}
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_cqssc.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_cqssc.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -170,12 +176,12 @@ export default class PopularPage extends Component {
             </View>
             <View  style={styles.lotteryItem}>
               <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_hljssc.png')}
+                source={require('../../res/images/lotteryLogo/ic_logo_bg_hljssc.png')}
                 style={styles.lotteryBg}
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_hljssc.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_hljssc.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -186,12 +192,12 @@ export default class PopularPage extends Component {
             </View>
             <View  style={styles.lotteryItem}>
               <ImageBackground
-                source={require('../res/images/lotteryLogo/ic_logo_bg_tjssc.png')}
+                source={require('../../res/images/lotteryLogo/ic_logo_bg_tjssc.png')}
                 style={styles.lotteryBg}
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_tjssc.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_tjssc.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -210,7 +216,7 @@ export default class PopularPage extends Component {
               11选5
             </Text>
             <Image
-              source={require('../res/images/ic_hot.png')}
+              source={require('../../res/images/ic_hot.png')}
               style={styles.hotImg}
               resizeMode="stretch"
             />
@@ -222,7 +228,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_sd11x5.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_sd11x5.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -237,7 +243,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_jx11x5.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_jx11x5.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -252,7 +258,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_tjssc.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_tjssc.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -271,7 +277,7 @@ export default class PopularPage extends Component {
               快三
             </Text>
             <Image
-              source={require('../res/images/ic_hot.png')}
+              source={require('../../res/images/ic_hot.png')}
               style={styles.hotImg}
               resizeMode="stretch"
             />
@@ -283,7 +289,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_jsk3.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_jsk3.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -298,7 +304,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_ahk3.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_ahk3.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -313,7 +319,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_hnk3.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_hnk3.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -332,7 +338,7 @@ export default class PopularPage extends Component {
               其它
             </Text>
             <Image
-              source={require('../res/images/ic_hot.png')}
+              source={require('../../res/images/ic_hot.png')}
               style={styles.hotImg}
               resizeMode="stretch"
             />
@@ -344,7 +350,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_hklhc.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_hklhc.png')}
                   style={styles.lotteryLogo}
                   resizeMode="stretch"
                 />
@@ -359,7 +365,7 @@ export default class PopularPage extends Component {
                 resizeMode="stretch"
               >
                 <Image
-                  source={require('../res/images/lotteryLogo/ic_logo_bjpk10.png')}
+                  source={require('../../res/images/lotteryLogo/ic_logo_bjpk10.png')}
                   style={styles.lotteryLogo}
                   resizeMode="contain"
                 />
@@ -375,26 +381,34 @@ export default class PopularPage extends Component {
   }
   render() {
     return(
-      <View 
-        style={styles.container}
+      <SafeAreaViewPlus 
+        topColor={THEME.navBgColor}
+        topInset={true}
       >
-        <StatusBarView backgroundColor={'#000'}/>
-        {/* 固定头 */}
-        {this._renderHeader()}
-        {/* 滚动区域 */}
-        <View style={styles.scrollContainer}>
-          <ScrollView>
-            {/* 轮播图 */}
-            <View>
-            {this._renderBanner()}
-            </View>
-            {/* 公告 */}
-            {this._renderNews()}
-            {/* 彩种列表 */}
-            {this._renderLotteryList()}
-          </ScrollView>
+        <View style={styles.container}>
+          <NavigationBar
+            style={{backgroundColor:THEME.navBgColor}}
+          />
+          {/* 固定头 */}
+          {this._renderHeader()}
+          {/* 滚动区域 */}
+          <View style={styles.scrollContainer}>
+            <ScrollView
+              alwaysBounceVertical={true}
+            >
+              {/* 轮播图 */}
+              <View>
+              {this._renderBanner()}
+              </View>
+              {/* 公告 */}
+              {this._renderNews()}
+              {/* 彩种列表 */}
+              {this._renderLotteryList()}
+              {/* <View style={{height: 10}}></View> */}
+            </ScrollView>
+          </View>
         </View>
-      </View>
+      </SafeAreaViewPlus>
     )
   }
 }
@@ -402,13 +416,13 @@ export default class PopularPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: THEME.containerBgColor,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#0c0a0a',
+    backgroundColor: THEME.navBgColor,
     paddingTop: 10,
     paddingRight: 15,
     paddingBottom: 10,
@@ -459,10 +473,11 @@ const styles = StyleSheet.create({
     height: 10
   },
   banners: {
+    paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
     width: 355,
-    height: 140,
+    height: 150,
   },
   bannerImg: {
     width: 355,

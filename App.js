@@ -8,7 +8,7 @@
 
 import React, { Component } from 'react'
 import { Platform, StyleSheet, Text, View, Image } from 'react-native'
-import { AppNavigators } from './navigators/AppNavigators'
+import { AppNavigators } from './js/navigators/AppNavigators'
 
 export default class App extends React.Component {
   // 第一种写法

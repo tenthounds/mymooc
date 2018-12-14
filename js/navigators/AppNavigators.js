@@ -1,16 +1,18 @@
 import React, { PureComponent } from 'react'
 import {Image, StyleSheet} from 'react-native'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+
 import PopularPage from '../pages/PopularPage'
 import TrendingPage from '../pages/TrendingPage'
 import FavoritePage from '../pages/FavoritePage'
 import MyPage from '../pages/MyPage'
-import Page1 from '../pages/Page1'
-const PolularIcon = require("../res/images/ic_polular.png");
-const PolularSelectedIcon = require("../res/images/ic_polular.png");
-const TrendingIcon = require("../res/images/ic_trending.png");
-const FavoriteIcon = require("../res/images/ic_favorite.png");
-const MyIcon = require("../res/images/ic_my.png");
+import SscPage from '../pages/lottery/ssc/SscPage'
+
+const PolularIcon = require("../../res/images/ic_polular.png");
+const PolularSelectedIcon = require("../../res/images/ic_polular.png");
+const TrendingIcon = require("../../res/images/ic_trending.png");
+const FavoriteIcon = require("../../res/images/ic_favorite.png");
+const MyIcon = require("../../res/images/ic_my.png");
 export const TabNavigator = createBottomTabNavigator({
   PopularPage: {
     screen: PopularPage,
@@ -91,15 +93,13 @@ export const TabNavigator = createBottomTabNavigator({
 export const AppNavigators = createStackNavigator({
   Home: {
     screen: TabNavigator,
-    navigationOptions: {
-      headerTitle: '最热'
-    }
   },
-  page1: {
-    screen: Page1,
-    navigationOptions: {
-      headerTitle: 'a'
-    }
+  SscPage: {
+    screen: SscPage
+  }
+},{
+  navigationOptions: {
+    header: null
   }
 })
 
