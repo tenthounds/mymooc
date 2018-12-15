@@ -47,6 +47,6 @@ export default class SscPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.containerBgColor
+    backgroundColor: THEME.containerBgColor
   }
 })

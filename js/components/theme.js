@@ -1,6 +1,6 @@
 const theme = {
   containerBgColor: '#f3f3f3',
-  navBgColor: '#0c0a0a',
+  navBgColor: 'rgba(0,0,0,.9)',
   bannerBgColor: '#1a1514'
 }
 export default theme;
