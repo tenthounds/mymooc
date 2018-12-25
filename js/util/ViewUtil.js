@@ -72,7 +72,7 @@ export default class ViewUtils {
       <TouchableOpacity style={{ padding: 8 }} onPress={callBack}>
         <Image
           style={{ width: 26, height: 26 }}
-          source={require('../../res/images/ic_arrow_back_white_36pt.png')}
+          source={require('../../res/images/ic_back.png')}
         />
       </TouchableOpacity>
     )

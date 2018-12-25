@@ -15,9 +15,10 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types'
 import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
-import theme from '../components/theme'
+import LinearGradient from 'react-native-linear-gradient'
 
-const THEME = theme
+import THEME from '../style/Theme'
+
 const NAV_BAR_HEIGHT_IOS = 44
 const NAV_BAR_HEIGHT_ANDROID = 50
 const STATUS_BAR_HEIGHT = isIphoneX ? 0 : 20
@@ -83,8 +84,10 @@ export default class NavigationBar extends Component {
     )
     return (
       <View style={[styles.container, this.props.style]}>
-        {statusBar}
-        {content}
+        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={THEME.linearGradientColor}>
+          {statusBar}
+          {content}
+        </LinearGradient>
       </View>
     )
   }

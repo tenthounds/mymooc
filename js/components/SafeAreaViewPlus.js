@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import { SafeAreaView, StyleSheet, View, ViewPropTypes} from 'react-native';
 import {PropTypes} from 'prop-types';
 import { ifIphoneX, isIphoneX } from 'react-native-iphone-x-helper'
-import theme from '../components/theme'
+import LinearGradient from 'react-native-linear-gradient'
 
-const THEME = theme
+import THEME from '../style/Theme'
+
 export default class SafeAreaViewPlus extends Component {
     static propTypes = {
         ...ViewPropTypes,
@@ -22,10 +23,12 @@ export default class SafeAreaViewPlus extends Component {
         topInset: false,
         bottomInset: true
     };
-
+    
     getTopArea(topColor, topInset) {
         return !isIphoneX || topInset ? null
-            : <View style={[styles.topArea, {backgroundColor: topColor}]}/>
+            : <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={THEME.linearGradientColor} style={styles.topArea}>
+                {/* <View style={[styles.topArea, {backgroundColor: topColor}]}/> */}
+              </LinearGradient>
     }
 
     getBottomArea(bottomColor, bottomInset) {
