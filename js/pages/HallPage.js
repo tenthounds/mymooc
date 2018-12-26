@@ -399,7 +399,7 @@ export default class HallPage extends Component {
       >
         <View style={styles.container}>
           <NavigationBar
-            style={{backgroundColor:THEME.navBgColor}}
+            hide={true}
           />
           {/* 固定头 */}
           {this._renderHeader()}

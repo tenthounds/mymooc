@@ -21,7 +21,7 @@ import THEME from '../style/Theme'
 
 const NAV_BAR_HEIGHT_IOS = 44
 const NAV_BAR_HEIGHT_ANDROID = 50
-const STATUS_BAR_HEIGHT = isIphoneX ? 0 : 20
+const STATUS_BAR_HEIGHT = isIphoneX() ? 0 : 20
 const StatusBarShape = {
   barStyle: PropTypes.oneOf(['light-content', 'default']),
   hidden: PropTypes.bool,

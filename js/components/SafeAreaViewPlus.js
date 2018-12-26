@@ -25,14 +25,17 @@ export default class SafeAreaViewPlus extends Component {
     };
     
     getTopArea(topColor, topInset) {
-        return !isIphoneX || topInset ? null
+        // iphonex 刘海头
+        const needTopArea = !isIphoneX() || topInset;
+        return needTopArea ? null
             : <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={THEME.linearGradientColor} style={styles.topArea}>
                 {/* <View style={[styles.topArea, {backgroundColor: topColor}]}/> */}
               </LinearGradient>
     }
 
     getBottomArea(bottomColor, bottomInset) {
-        return !isIphoneX || bottomInset ? null
+        const needBtmArea = !isIphoneX() || bottomInset;
+        return needBtmArea ? null
             : <View style={[styles.bottomArea, {backgroundColor: bottomColor}]}/>
     }
 

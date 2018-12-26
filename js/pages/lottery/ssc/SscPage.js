@@ -7,8 +7,9 @@
  */
 
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, View, Image, Button,TouchableOpacity,ScrollView,TouchableWithoutFeedback } from 'react-native'
+import { Platform, StyleSheet, Text, View, Image, Button,TouchableOpacity,ScrollView,TouchableWithoutFeedback, Animated } from 'react-native'
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
+import LinearGradient from 'react-native-linear-gradient'
 
 import SafeAreaViewPlus from '../../../components/SafeAreaViewPlus'
 import NavigationBar from '../../../components/NavigationBar'
@@ -19,19 +20,26 @@ export default class SscPage extends Component {
   constructor(props){
     super(props);
     this.state={
-      
+      playSelectPanelShow: false
     }
   }
   // 回退
   onBack() {
     this.props.navigation.pop();
   }
+  // 展开/收起 玩法选择面板
+  togglePlaySecelePanel() {
+    const playSelectPanelShow = this.state.playSelectPanelShow
+    this.setState({
+      playSelectPanelShow: !playSelectPanelShow
+    })
+  }
   //  截止栏
   _renderCutOffPanel() {
     return (
       <View style={styles.playContainer}>
         <Text>距0023期截止：09:23</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>this.togglePlaySecelePanel()}>
           <View style={styles.playSelect}>
             <Text style={styles.playSelectText}>
               五星直选复式
@@ -61,6 +69,8 @@ export default class SscPage extends Component {
           {/* 开奖历史方法 */}
           {this._renderHistoryTab()}
         </ScrollableTabView>
+        {/* 玩法选择面板 */}
+        { this._renderPlaySelectPanel()}
       </View>
     )
   }
@@ -93,7 +103,47 @@ export default class SscPage extends Component {
         </ScrollView>
         {/* 选球底部操作栏 */}
         <View style={styles.ballsBottomBar}>
-          <Text>1</Text>
+          <View style={styles.clearContainer}>
+            <Image source={require('../../../../res/images/ic_clear.png')}
+              style={styles.clearImg}/>
+            <Text style={styles.clearText}>清空</Text>
+          </View>
+          <View style={styles.line}></View>
+          <View style={styles.unit}>
+            <Text style={styles.unitText}>
+              元
+            </Text>
+            <Image source={require('../../../../res/images/ic_full_arrow_down.png')}
+              style={styles.unitImg}/>
+          </View>
+          <View style={styles.statistics}>
+            <Image style={styles.statisticsImg}
+              source={require('../../../../res/images/ic_add_no.png')}
+            />
+            <View style={styles.statisticsCnt}>
+              <Text style={styles.statisticsText}>
+                已选
+                <Text style={styles.numText}>0</Text>
+                注
+              </Text>
+              <Text style={[styles.statisticsText, styles.mt10]}>
+                合计
+                <Text style={styles.numText}>0</Text>
+                元
+              </Text>
+            </View>
+          </View>
+          {/* 加入购彩篮按钮 */}
+          <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={THEME.linearGradientColor}>
+            <View style={styles.addCart}>
+              <View style={styles.addCartView}>
+                <Text style={styles.addCartText}>
+                  加入购彩蓝
+                </Text>
+                <View style={styles.cartNumView}><Text style={styles.cartNum}>1</Text></View>
+              </View>
+            </View>
+          </LinearGradient>
         </View>
       </View>
     )
@@ -105,6 +155,107 @@ export default class SscPage extends Component {
         <Text>
           开奖历史
         </Text>
+      </View>
+    )
+  }
+  // 玩法下拉选择面板
+  _renderPlaySelectPanel() {
+    return (
+      <View style={styles.playSelectPanel}>
+        <View style={styles.playSelectCnt}>
+          <View style={styles.playGroupsSelect}>
+            <Text style={styles.playGroupsTitle}>玩法选择</Text>
+            <View style={styles.groupsSection}>
+              <View style={styles.groupsItem}>
+                <Text style={[styles.groupsItemText,styles.activeText]}>
+                  趣味
+                </Text>
+              </View>
+              <View style={styles.groupsItem}>
+                <Text style={styles.groupsItemText}>
+                  五星
+                </Text>
+              </View>
+              <View style={styles.groupsItem}>
+                <Text style={styles.groupsItemText}>
+                  四星
+                </Text>
+              </View>
+              <View style={styles.groupsItem}>
+                <Text style={styles.groupsItemText}>
+                  三星
+                </Text>
+              </View>
+              <View style={styles.groupsItem}>
+                <Text style={styles.groupsItemText}>
+                  二星
+                </Text>
+              </View>
+              <View style={styles.groupsItem}>
+                <Text style={styles.groupsItemText}>
+                  一星
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.playline}></View>
+          <View style={styles.playGroupSelect}>
+            <View style={styles.groupRow}>
+              <Text style={styles.groupRowTitle}>
+                直选：
+              </Text>
+              <View style={styles.groupItemCnt}>
+                <View style={styles.groupItem}>
+                  <Text style={[styles.groupItemText,styles.activeText]}>
+                    直选复式
+                  </Text>
+                </View>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    直选组合
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.groupRow}>
+              <Text style={styles.groupRowTitle}>
+                组选：
+              </Text>
+              <View style={styles.groupItemCnt}>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    组选120
+                  </Text>
+                </View>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    组选60
+                  </Text>
+                </View>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    组选30
+                  </Text>
+                </View>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    组选20
+                  </Text>
+                </View>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    组选10
+                  </Text>
+                </View>
+                <View style={styles.groupItem}>
+                  <Text style={styles.groupItemText}>
+                    组选5
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
       </View>
     )
   }
@@ -130,6 +281,103 @@ export default class SscPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  playSelectPanel: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,.4)',
+  },
+  playSelectCnt: {
+    backgroundColor: THEME.containerBgColor,
+    width: '100%',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  playGroupsSelect: {
+    // paddingLeft: 10,
+    // paddingRight: 10
+  },
+  playline: {
+    width: '96%',
+    height: 1,
+    backgroundColor: THEME.borderColor,
+    marginTop: 10,
+    marginLeft: '2%',
+  },
+  playGroupsTitle: {
+    fontSize: 16,
+    color: THEME.normalColor,
+    marginTop: 15,
+    marginBottom: 15,
+    paddingLeft: '2%'
+  },
+  groupsSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap'
+  },
+  groupsItem: {
+    width: '25%',
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    height: 26,
+    marginBottom: 10,
+  },
+  groupsItemText: {
+    borderWidth: 1,
+    borderColor: THEME.borderColor,
+    fontSize: 14,
+    lineHeight: 24,
+    flex: 1,
+    textAlign: 'center',
+    borderRadius: 3,
+    overflow: 'hidden'
+  },
+  playGroupSelect: {
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+  groupRow: {
+    flexDirection: 'row',
+    // alignItems: 'center',
+    flexWrap: 'wrap',
+    marginBottom: 10
+  },
+  groupRowTitle: {
+    height: 26,
+    lineHeight: 26
+  },
+  groupItemCnt: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1
+  },
+  groupItemText: {
+    height: 26,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderWidth: 1,
+    borderColor: THEME.borderColor,
+    fontSize: 14,
+    lineHeight: 24,
+    textAlign: 'center',
+    borderRadius: 3,
+    marginRight: 5,
+    marginBottom: 8,
+    overflow: 'hidden'
+  },
+  activeText: {
+    backgroundColor: THEME.activeColor,
+    borderColor: THEME.activeColor,
+    borderRadius: 3,
+    color: '#fff',
+  },
+  // 玩法下拉选择面板
   container: {
     flex: 1,
     backgroundColor: THEME.containerBgColor
@@ -170,6 +418,7 @@ const styles = StyleSheet.create({
   },
   tabViewContainer: {
     flex: 1,
+    position: 'relative'
   },
   ballsPanel: {
     paddingLeft: 10,
@@ -214,12 +463,104 @@ const styles = StyleSheet.create({
   },
   playTipsText: {
     color: '#4e3e31',
-    fontSize: 12
+    fontSize: 12,
   },
   // 选球底部操作栏
   ballsBottomBar: {
     width: '100%',
     height: 49,
-    backgroundColor: 'red',
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  clearContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 49,
+    height: 49,
+  },
+  clearImg: {
+    width: 19,
+    height: 19,
+  },
+  clearText: {
+    fontSize: 10,
+    marginTop: 3
+  },
+  line: {
+    width: 1,
+    backgroundColor: '#e7e7e7',
+    height: 30
+  },
+  unit: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 53,
+    height: 49,
+    // backgroundColor: 'red'
+  },
+  unitText: {
+    fontSize: 16,
+    marginTop: 5
+  },
+  unitImg: {
+    width: 8,
+    height: 8,
+  },
+  statistics: {
+    backgroundColor: THEME.containerBgColor,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 49,
+    paddingLeft: 15,
+    flex:1,
+    // padding:
+  },
+  statisticsImg: {
+    width: 20,
+    height: 20,
+    marginRight: 5
+  },
+  statisticsCnt: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statisticsText: {
+    fontSize: 12
+  },
+  mt10: {
+    marginTop: 5
+  },
+  numText: {
+    color: THEME.activeColor,
+    width: 20,
+    height: 49
+  },
+  addCart: {
+    height: 49,
+    width: 132,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  addCartView: {
+    position: 'relative',
+  },
+  addCartText: {
+    fontSize: 17,
+    color: '#fff',
+  },
+  cartNumView: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    position: 'absolute',
+    right: -12,
+    top: -9
+  },
+  cartNum: {
+    color: THEME.activeColor,
+    textAlign: 'center'
   }
 })

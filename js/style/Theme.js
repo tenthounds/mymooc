@@ -5,6 +5,7 @@ const theme = {
   linearGradientColor: ['#ee843d','#ec6839'],
   normalColor: '#333',
   activeColor: '#ec6839',
-  inactiveColor: '#888585'
+  inactiveColor: '#888585',
+  borderColor: '#ada7a7'
 }
 export default theme;
