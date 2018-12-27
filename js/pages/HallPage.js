@@ -395,7 +395,7 @@ export default class HallPage extends Component {
     return(
       <SafeAreaViewPlus 
         topColor={THEME.navBgColor}
-        topInset={true}
+        topInset={false}
       >
         <View style={styles.container}>
           <NavigationBar
@@ -416,7 +416,6 @@ export default class HallPage extends Component {
               {this._renderNews()}
               {/* 彩种列表 */}
               {this._renderLotteryList()}
-              {/* <View style={{height: 10}}></View> */}
             </ScrollView>
           </View>
         </View>

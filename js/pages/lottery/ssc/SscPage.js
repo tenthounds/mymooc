@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, View, Image, Button,TouchableOpacity,ScrollView,TouchableWithoutFeedback, Animated } from 'react-native'
+import { Platform, StyleSheet, Text, View, Image, Button,TouchableOpacity,ScrollView,TouchableWithoutFeedback, Animated,Easing } from 'react-native'
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -20,7 +20,10 @@ export default class SscPage extends Component {
   constructor(props){
     super(props);
     this.state={
-      playSelectPanelShow: false
+      playSelectPanelShow: false,
+      modalHeight: new Animated.Value(0),
+      maxHeight: 300,
+      fadeOutOpacity: new Animated.Value(0),
     }
   }
   // 回退
@@ -30,11 +33,41 @@ export default class SscPage extends Component {
   // 展开/收起 玩法选择面板
   togglePlaySecelePanel() {
     const playSelectPanelShow = this.state.playSelectPanelShow
+    let initialValue = !this.state.playSelectPanelShow?0:this.state.maxHeight
+    let finalValue = this.state.playSelectPanelShow?0:this.state.maxHeight
+    let initOpacity = !this.state.playSelectPanelShow?0:1
+    let finalOpacity = this.state.playSelectPanelShow?0:1
+    if(!playSelectPanelShow){
+      Animated.sequence([ // 组合动画 parallel（同时执行）、sequence（顺序执行）、stagger（错峰，其实就是插入了delay的parrllel）和delay（延迟
+        Animated.timing(this.state.fadeOutOpacity, { // 从时间范围映射到渐变的值。
+          toValue: finalOpacity,
+          duration: 50,
+          easing: Easing.linear, // 线性的渐变函数
+        }), 
+        Animated.timing(this.state.modalHeight, {
+          toValue: finalValue,
+          duration: 300,
+          easing: Easing.linear, 
+        })
+      ]).start();
+    }else{
+      Animated.sequence([
+        Animated.timing(this.state.modalHeight, {
+          toValue: finalValue,
+          duration: 300,
+          easing: Easing.linear,
+        }),
+        Animated.timing(this.state.fadeOutOpacity, {
+          toValue: finalOpacity,
+          duration: 100,
+          easing: Easing.linear,
+        }),
+      ]).start();
+    }
     this.setState({
       playSelectPanelShow: !playSelectPanelShow
     })
   }
-  //  截止栏
   _renderCutOffPanel() {
     return (
       <View style={styles.playContainer}>
@@ -46,7 +79,7 @@ export default class SscPage extends Component {
             </Text>
             <Image 
               source={require('../../../../res/images/ic_select.png')}
-              style={styles.playSelectImg}
+              style={[styles.playSelectImg, styles.playSelectImgDown]}
             />
           </View>
         </TouchableOpacity>
@@ -59,7 +92,7 @@ export default class SscPage extends Component {
       <View style={styles.tabViewContainer}>
         <ScrollableTabView
           renderTabBar={()=> <ScrollableTabBar/>}
-          tabBarBackgroundColor='#f8f8f8'
+          tabBarBackgroundColor={THEME.containerBgColor}
           tabBarUnderlineStyle={styles.lineStyle}
           tabBarActiveTextColor={THEME.activeColor}
           tabBarInactiveTextColor={THEME.inactiveColor}
@@ -137,7 +170,9 @@ export default class SscPage extends Component {
           <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={THEME.linearGradientColor}>
             <View style={styles.addCart}>
               <View style={styles.addCartView}>
-                <Text style={styles.addCartText}>
+                <Text style={styles.addCartText}
+                  onPress={()=>{this.addCart()}}
+                  >
                   加入购彩蓝
                 </Text>
                 <View style={styles.cartNumView}><Text style={styles.cartNum}>1</Text></View>
@@ -147,6 +182,10 @@ export default class SscPage extends Component {
         </View>
       </View>
     )
+  }
+  // 跳转到购彩蓝页面
+  addCart() {
+    
   }
   // 开奖历史
   _renderHistoryTab() {
@@ -161,102 +200,108 @@ export default class SscPage extends Component {
   // 玩法下拉选择面板
   _renderPlaySelectPanel() {
     return (
-      <View style={styles.playSelectPanel}>
-        <View style={styles.playSelectCnt}>
-          <View style={styles.playGroupsSelect}>
-            <Text style={styles.playGroupsTitle}>玩法选择</Text>
-            <View style={styles.groupsSection}>
-              <View style={styles.groupsItem}>
-                <Text style={[styles.groupsItemText,styles.activeText]}>
-                  趣味
-                </Text>
-              </View>
-              <View style={styles.groupsItem}>
-                <Text style={styles.groupsItemText}>
-                  五星
-                </Text>
-              </View>
-              <View style={styles.groupsItem}>
-                <Text style={styles.groupsItemText}>
-                  四星
-                </Text>
-              </View>
-              <View style={styles.groupsItem}>
-                <Text style={styles.groupsItemText}>
-                  三星
-                </Text>
-              </View>
-              <View style={styles.groupsItem}>
-                <Text style={styles.groupsItemText}>
-                  二星
-                </Text>
-              </View>
-              <View style={styles.groupsItem}>
-                <Text style={styles.groupsItemText}>
-                  一星
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.playline}></View>
-          <View style={styles.playGroupSelect}>
-            <View style={styles.groupRow}>
-              <Text style={styles.groupRowTitle}>
-                直选：
-              </Text>
-              <View style={styles.groupItemCnt}>
-                <View style={styles.groupItem}>
-                  <Text style={[styles.groupItemText,styles.activeText]}>
-                    直选复式
+      <Animated.View 
+        style={[styles.playSelectPanel,{opacity: this.state.fadeOutOpacity}]}
+        >
+        <Animated.View  
+          style={[{height:this.state.modalHeight}]}
+          >
+          <ScrollView style={styles.playSelectCnt}>
+            <View style={styles.playGroupsSelect}>
+              <Text style={styles.playGroupsTitle}>玩法选择</Text>
+              <View style={styles.groupsSection}>
+                <View style={styles.groupsItem}>
+                  <Text style={[styles.groupsItemText,styles.activeText]}>
+                    趣味
                   </Text>
                 </View>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    直选组合
+                <View style={styles.groupsItem}>
+                  <Text style={styles.groupsItemText}>
+                    五星
+                  </Text>
+                </View>
+                <View style={styles.groupsItem}>
+                  <Text style={styles.groupsItemText}>
+                    四星
+                  </Text>
+                </View>
+                <View style={styles.groupsItem}>
+                  <Text style={styles.groupsItemText}>
+                    三星
+                  </Text>
+                </View>
+                <View style={styles.groupsItem}>
+                  <Text style={styles.groupsItemText}>
+                    二星
+                  </Text>
+                </View>
+                <View style={styles.groupsItem}>
+                  <Text style={styles.groupsItemText}>
+                    一星
                   </Text>
                 </View>
               </View>
             </View>
-            <View style={styles.groupRow}>
-              <Text style={styles.groupRowTitle}>
-                组选：
-              </Text>
-              <View style={styles.groupItemCnt}>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    组选120
-                  </Text>
+            <View style={styles.playline}></View>
+            <View style={styles.playGroupSelect}>
+              <View style={styles.groupRow}>
+                <Text style={styles.groupRowTitle}>
+                  直选：
+                </Text>
+                <View style={styles.groupItemCnt}>
+                  <View style={styles.groupItem}>
+                    <Text style={[styles.groupItemText,styles.activeText]}>
+                      直选复式
+                    </Text>
+                  </View>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      直选组合
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    组选60
-                  </Text>
-                </View>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    组选30
-                  </Text>
-                </View>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    组选20
-                  </Text>
-                </View>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    组选10
-                  </Text>
-                </View>
-                <View style={styles.groupItem}>
-                  <Text style={styles.groupItemText}>
-                    组选5
-                  </Text>
+              </View>
+              <View style={styles.groupRow}>
+                <Text style={styles.groupRowTitle}>
+                  组选：
+                </Text>
+                <View style={styles.groupItemCnt}>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      组选120
+                    </Text>
+                  </View>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      组选60
+                    </Text>
+                  </View>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      组选30
+                    </Text>
+                  </View>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      组选20
+                    </Text>
+                  </View>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      组选10
+                    </Text>
+                  </View>
+                  <View style={styles.groupItem}>
+                    <Text style={styles.groupItemText}>
+                      组选5
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </View>
-      </View>
+          </ScrollView>
+        </Animated.View>
+      </Animated.View>
     )
   }
   render() {
@@ -294,7 +339,8 @@ const styles = StyleSheet.create({
     backgroundColor: THEME.containerBgColor,
     width: '100%',
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    overflow: 'scroll'
   },
   playGroupsSelect: {
     // paddingLeft: 10,
@@ -411,7 +457,7 @@ const styles = StyleSheet.create({
   },
   playSelectImg: {
     width: 16,
-    height: 16
+    height: 16,
   },
   lineStyle: {
     height: 0,
