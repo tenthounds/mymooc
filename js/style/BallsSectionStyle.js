@@ -52,7 +52,13 @@ const ballsStyles = {
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+    shadowOffset: {width: 1, height: 0},
+    shadowOpacity: .8,
+    shadowRadius: 3,
+    shadowColor: THEME.borderColor,
+    //注意：这一句是可以让安卓拥有灰色阴影
+    elevation: 3,
   },
   activeBallsLinear: {
     width: 40,

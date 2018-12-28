@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, View, Image, Button,TouchableOpacity,ScrollView,TouchableWithoutFeedback, Animated,Easing } from 'react-native'
+import { Platform, StyleSheet, Text, View, Image, Button, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Animated, Easing, Alert, } from 'react-native'
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -38,6 +38,9 @@ export default class SscPage extends Component {
     let initOpacity = !this.state.playSelectPanelShow?0:1
     let finalOpacity = this.state.playSelectPanelShow?0:1
     if(!playSelectPanelShow){
+      this.setState({
+        playSelectPanelShow: !playSelectPanelShow
+      });
       Animated.sequence([ // 组合动画 parallel（同时执行）、sequence（顺序执行）、stagger（错峰，其实就是插入了delay的parrllel）和delay（延迟
         Animated.timing(this.state.fadeOutOpacity, { // 从时间范围映射到渐变的值。
           toValue: finalOpacity,
@@ -62,11 +65,12 @@ export default class SscPage extends Component {
           duration: 100,
           easing: Easing.linear,
         }),
-      ]).start();
+      ]).start(()=>{
+        this.setState({
+          playSelectPanelShow: !playSelectPanelShow
+        })
+      });
     }
-    this.setState({
-      playSelectPanelShow: !playSelectPanelShow
-    })
   }
   _renderCutOffPanel() {
     return (
@@ -103,7 +107,7 @@ export default class SscPage extends Component {
           {this._renderHistoryTab()}
         </ScrollableTabView>
         {/* 玩法选择面板 */}
-        { this._renderPlaySelectPanel()}
+        { this.state.playSelectPanelShow?this._renderPlaySelectPanel():null}
       </View>
     )
   }
@@ -200,13 +204,20 @@ export default class SscPage extends Component {
   // 玩法下拉选择面板
   _renderPlaySelectPanel() {
     return (
-      <Animated.View 
-        style={[styles.playSelectPanel,{opacity: this.state.fadeOutOpacity}]}
-        >
+      <View style={[styles.playSelectPanel]}>
+        {/* 遮罩层 */}
+        <TouchableWithoutFeedback onPress={()=>this.togglePlaySecelePanel()}>
+          <Animated.View 
+            style={[styles.playMask,{opacity: this.state.fadeOutOpacity}]}
+            >
+          </Animated.View>
+        </TouchableWithoutFeedback>
+        {/* 内容区域 */}
         <Animated.View  
           style={[{height:this.state.modalHeight}]}
           >
-          <ScrollView style={styles.playSelectCnt}>
+          <ScrollView style={styles.playSelectCnt}  alwaysBounceVertical={false}>
+            {/* 玩法群 */}
             <View style={styles.playGroupsSelect}>
               <Text style={styles.playGroupsTitle}>玩法选择</Text>
               <View style={styles.groupsSection}>
@@ -243,6 +254,7 @@ export default class SscPage extends Component {
               </View>
             </View>
             <View style={styles.playline}></View>
+            {/* 玩法组 */}
             <View style={styles.playGroupSelect}>
               <View style={styles.groupRow}>
                 <Text style={styles.groupRowTitle}>
@@ -301,7 +313,7 @@ export default class SscPage extends Component {
             </View>
           </ScrollView>
         </Animated.View>
-      </Animated.View>
+      </View>
     )
   }
   render() {
@@ -333,14 +345,22 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,.4)',
+  },
+  playMask: {
+    position: 'absolute',
+    top:0,
+    left: 0,
+    flex: 1,
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgba(0,0,0,.4)'
   },
   playSelectCnt: {
     backgroundColor: THEME.containerBgColor,
     width: '100%',
     paddingLeft: 10,
     paddingRight: 10,
-    overflow: 'scroll'
+    flex:1
   },
   playGroupsSelect: {
     // paddingLeft: 10,
